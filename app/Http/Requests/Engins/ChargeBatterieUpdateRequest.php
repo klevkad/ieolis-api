@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Requests\Engins;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class ChargeBatterieUpdateRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'batterie_id' => 'exists:parc.batteries,id',
+            'prise_id' => 'exists:parc.prises,id',
+            'debut' => 'date',
+            'fin' => $this->fin ? 'date' : '',
+        ];
+    }
+}

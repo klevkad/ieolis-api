@@ -1,0 +1,547 @@
+composer create-project --prefer-dist laravel/laravel API
+
+cd API
+
+composer require barryvdh/laravel-dompdf
+php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider"
+
+composer require elibyy/tcpdf-laravel
+composer require mpdf/mpdf
+composer require maatwebsite/excel
+php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" --tag=config
+
+composer require yajra/laravel-oci8
+php artisan vendor:publish --tag=oracle
+
+composer require spatie/laravel-permission
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="migrations"
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="config"
+php artisan optimize:clear
+
+composer require ladumor/one-signal
+php artisan vendor:publish --provider="Ladumor\OneSignal\OneSignalServiceProvider"
+
+composer require laravel/passport
+php artisan migrate
+php artisan passport:install
+php artisan vendor:publish --tag=passport-config
+
+composer require intervention/image
+php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLaravelRecent"
+
+
+### MODELS ET MIGRATIONS ###
+
+php artisan make:model Fichiers/Activite -m
+php artisan make:model Fichiers/Chauffeur -m
+php artisan make:model Fichiers/EtapeSuiviBooking -m
+php artisan make:model Fichiers/LieuAppro -m
+php artisan make:model Fichiers/Panne -m
+php artisan make:model Fichiers/Pannes_Typengin
+php artisan make:model Fichiers/RLieu
+php artisan make:model Fichiers/StationEmpotage -m
+php artisan make:model Fichiers/Transporteur -m
+php artisan make:model Fichiers/TypeIncident -m
+
+php artisan make:model OauthAccessToken
+
+php artisan make:model Engins/ApproCarburant -m
+
+php artisan make:model Export/AttributionClipon -m
+php artisan make:model Export/AttributionCliponVerif -m
+php artisan make:model Export/AttributionCliponRetour -m
+php artisan make:model Export/AttributionCliponRetourVerif -m
+php artisan make:model Export/AttributionTc -m
+php artisan make:model Export/BookingTc -m
+php artisan make:model Export/BookingTcFinal -m
+php artisan make:model Export/DemandeBooking -m
+php artisan make:model Export/EmbarquementTc -m
+php artisan make:model Export/EmpotageTcPosit -m
+php artisan make:model Export/FinPositTc -m
+php artisan make:model Export/FinPositCliponVerif -m
+php artisan make:model Export/FinRetourTc -m
+php artisan make:model Export/FinRetourCliponVerif -m
+php artisan make:model Export/Incident -m
+php artisan make:model Export/MotifRefusBooking -m
+php artisan make:model Export/ParamTcReefer -m
+php artisan make:model Export/PositionnementTc -m
+php artisan make:model Export/PositionnementTcPropreMoyen -m
+php artisan make:model Export/RetourTc -m
+php artisan make:model Export/RetourTcMain -m
+php artisan make:model Export/RetourTcPropreMoyen -m
+
+php artisan make:model Export/Sortie_AttributionClipon
+php artisan make:model Export/Sortie_AttributionFinRetour
+php artisan make:model Export/Sortie_AttributionPosit
+php artisan make:model Export/Sortie_AttributionTc
+
+php artisan make:model Compta/F_Comptet
+
+php artisan make:model Old/Acconage/Branchement
+php artisan make:model Old/Acconage/Compteur
+php artisan make:model Old/Acconage/CompteurEau
+php artisan make:model Old/Acconage/Mod_Docker
+php artisan make:model Old/Acconage/ProduitBranch
+php artisan make:model Old/Acconage/ReleveIndexCompteur
+php artisan make:model Old/Acconage/ReleveIndexEau
+php artisan make:model Old/Acconage/ReleveShift
+php artisan make:model Old/Acconage/ReleveTemperatureReefer
+php artisan make:model Old/Acconage/StatutTc
+php artisan make:model Old/Acconage/Traffic
+
+php artisan make:model Old/Eco/Fact_Entete
+
+php artisan make:model Old/Eolis/A_Etatcs
+php artisan make:model Old/Eolis/A_Mvtcs
+php artisan make:model Old/Eolis/A_Tcsdeb
+php artisan make:model Old/Eolis/A_Tcsemb
+php artisan make:model Old/Eolis/Bls
+php artisan make:model Old/Eolis/Client
+php artisan make:model Old/Eolis/Compte_Tiers
+php artisan make:model Old/Eolis/Conteneu
+php artisan make:model Old/Eolis/Convcont
+php artisan make:model Old/Eolis/Employe
+php artisan make:model Old/Eolis/Escale
+php artisan make:model Old/Eolis/Facentet
+php artisan make:model Old/Eolis/Facture
+php artisan make:model Old/Eolis/Navire
+php artisan make:model Old/Eolis/Operateu
+php artisan make:model Old/Eolis/Port
+php artisan make:model Old/Eolis/Prevision_Debarq
+php artisan make:model Old/Eolis/Prevs_Debarq_Tcmanif
+php artisan make:model Old/Eolis/Prevs_Debarq_Tcnmanif
+php artisan make:model Old/Eolis/Prevs_Debarq_Vrac
+php artisan make:model Old/Eolis/Produit
+php artisan make:model Old/Eolis/Reglement_Achat
+php artisan make:model Old/Eolis/Situation_Tc
+php artisan make:model Old/Eolis/TcsBase
+php artisan make:model Old/Eolis/Username
+php artisan make:model Old/Eolis/View_Dossfill
+php artisan make:model Old/Eolis/View_Facentet
+php artisan make:model Old/Eolis/View_Douane_Mvt_Tcs
+php artisan make:model Old/Eolis/View_Eolis_Mvt_Tcs
+php artisan make:model Old/Eolis/View_User
+
+php artisan make:model Old/Etf/Engin
+php artisan make:model Old/Etf/SuiviKm
+
+php artisan make:model Old/Parc/Assurance
+php artisan make:model Old/Parc/Engin
+php artisan make:model Old/Parc/LigneSortie
+php artisan make:model Old/Parc/OI
+php artisan make:model Old/Parc/OperationTechnique
+php artisan make:model Old/Parc/OT
+php artisan make:model Old/Parc/Piece
+php artisan make:model Old/Parc/SignalPanne
+php artisan make:model Old/Parc/Sortie
+php artisan make:model Old/Parc/Typengin
+php artisan make:model Old/Parc/VisiteTechnique
+php artisan make:model Old/Parc/Reptc -mcr
+php artisan make:model Old/Parc/ReptcAction -mcr
+php artisan make:model Old/Parc/ReptcSide -mcr
+php artisan make:model Old/Parc/Batterie -mcr
+php artisan make:model Old/Parc/BatterieEtat -mcr
+php artisan make:model Old/Parc/BatterieType -mcr
+php artisan make:model Old/Parc/Prise -mcr
+php artisan make:model Old/Parc/Chargeur -mcr
+
+php artisan make:model Old/Parc/Batterie_Chargeur
+php artisan make:model Old/Parc/Batterie_Engin
+php artisan make:model Old/Parc/Batterie_Reception
+php artisan make:model Old/Parc/Batterie_Reception1
+
+php artisan make:model Old/Transit/Dossfill
+php artisan make:model Old/Transit/Dossmait
+
+php artisan make:model Archives/Document
+php artisan make:model Archives/Dossarchive
+
+php artisan make:migration create_relations
+
+
+### REQUETES ###
+
+php artisan make:request Fichiers/ActiviteCreateRequest
+php artisan make:request Fichiers/ChauffeurCreateRequest
+php artisan make:request Fichiers/EtapeSuiviBookingCreateRequest
+php artisan make:request Fichiers/LieuApproCreateRequest
+php artisan make:request Fichiers/PanneCreateRequest
+php artisan make:request Fichiers/RLieuCreateRequest
+php artisan make:request Fichiers/StationEmpotageCreateRequest
+php artisan make:request Fichiers/TransporteurCreateRequest
+php artisan make:request Fichiers/TypeIncidentCreateRequest
+
+php artisan make:request Fichiers/ActiviteUpdateRequest
+php artisan make:request Fichiers/ChauffeurUpdateRequest
+php artisan make:request Fichiers/EtapeSuiviBookingUpdateRequest
+php artisan make:request Fichiers/LieuApproUpdateRequest
+php artisan make:request Fichiers/PanneUpdateRequest
+php artisan make:request Fichiers/RLieuUpdateRequest
+php artisan make:request Fichiers/StationEmpotageUpdateRequest
+php artisan make:request Fichiers/TransporteurUpdateRequest
+php artisan make:request Fichiers/TypeIncidentUpdateRequest
+
+php artisan make:request LoginRequest
+php artisan make:request DouaneLoginRequest
+php artisan make:request UsernameLoginRequest
+php artisan make:request LogoutRequest
+
+php artisan make:request PermissionCreateRequest
+php artisan make:request PermissionUpdateRequest
+php artisan make:request RoleCreateRequest
+php artisan make:request RoleUpdateRequest
+php artisan make:request UserCreateRequest
+php artisan make:request UserUpdateRequest
+php artisan make:request UserResetRequest
+
+
+php artisan make:request Engins/ApproCarburantCreateRequest
+php artisan make:request Engins/AttributionBatterieCreateRequest
+php artisan make:request Engins/ChargeBatterieCreateRequest
+php artisan make:request Engins/OiCreateRequest
+php artisan make:request Engins/SignalPanneCreateRequest
+php artisan make:request Engins/SuiviKmCreateRequest
+
+php artisan make:request Engins/ApproCarburantUpdateRequest
+php artisan make:request Engins/AttributionBatterieUpdateRequest
+php artisan make:request Engins/ChargeBatterieUpdateRequest
+php artisan make:request Engins/OiUpdateRequest
+php artisan make:request Engins/SignalPanneUpdateRequest
+php artisan make:request Engins/SuiviKmUpdateRequest
+
+
+php artisan make:request Export/ReAttributionTcRequest
+
+php artisan make:request Export/AttributionCliponCreateRequest
+php artisan make:request Export/AttributionCliponRetourCreateRequest
+php artisan make:request Export/AttributionTcCreateRequest
+php artisan make:request Export/BookingTcCreateRequest
+php artisan make:request Export/BookingTcFinalCreateRequest
+php artisan make:request Export/DemandeBookingCreateRequest
+php artisan make:request Export/EmbarquementTcCreateRequest
+php artisan make:request Export/EmpotageTcPositCreateRequest
+php artisan make:request Export/FinPositTcCreateRequest
+php artisan make:request Export/FinRetourTcCreateRequest
+php artisan make:request Export/IncidentCreateRequest
+php artisan make:request Export/MotifRefusBookingCreateRequest
+php artisan make:request Export/ParamTcReeferCreateRequest
+php artisan make:request Export/PositionnementTcCreateRequest
+php artisan make:request Export/RetourTcCreateRequest
+php artisan make:request Export/Sortie_AttributionClipon
+
+php artisan make:request Export/AttributionCliponUpdateRequest
+php artisan make:request Export/AttributionCliponRetourUpdateRequest
+php artisan make:request Export/AttributionTcUpdateRequest
+php artisan make:request Export/BookingTcUpdateRequest
+php artisan make:request Export/BookingTcFinalUpdateRequest
+php artisan make:request Export/DemandeBookingUpdateRequest
+php artisan make:request Export/EmbarquementTcUpdateRequest
+php artisan make:request Export/EmpotageTcPositUpdateRequest
+php artisan make:request Export/FinPositTcUpdateRequest
+php artisan make:request Export/FinRetourTcUpdateRequest
+php artisan make:request Export/IncidentUpdateRequest
+php artisan make:request Export/MotifRefusBookingUpdateRequest
+php artisan make:request Export/ParamTcReeferUpdateRequest
+php artisan make:request Export/PositionnementTcUpdateRequest
+php artisan make:request Export/RetourTcUpdateRequest
+php artisan make:request Export/Sortie_AttributionCliponUpdateRequest
+
+
+php artisan make:request Old/Acconage/BranchementCreateRequest
+php artisan make:request Old/Acconage/CompteurEauCreateRequest
+php artisan make:request Old/Acconage/CompteurCreateRequest
+php artisan make:request Old/Acconage/Mod_DockerCreateRequest
+php artisan make:request Old/Acconage/ProduitBranchCreateRequest
+php artisan make:request Old/Acconage/ReleveIndexCompteurCreateRequest
+php artisan make:request Old/Acconage/ReleveIndexEauCreateRequest
+php artisan make:request Old/Acconage/ReleveTemperatureReeferCreateRequest
+php artisan make:request Old/Acconage/StatutTcCreateRequest
+php artisan make:request Old/Acconage/TrafficCreateRequest
+
+php artisan make:request Old/Acconage/BranchementUpdateRequest
+php artisan make:request Old/Acconage/CompteurEauUpdateRequest
+php artisan make:request Old/Acconage/CompteurUpdateRequest
+php artisan make:request Old/Acconage/Mod_DockerUpdateRequest
+php artisan make:request Old/Acconage/ProduitBranchUpdateRequest
+php artisan make:request Old/Acconage/ReleveIndexCompteurUpdateRequest
+php artisan make:request Old/Acconage/ReleveIndexEauUpdateRequest
+php artisan make:request Old/Acconage/ReleveTemperatureReeferUpdateRequest
+php artisan make:request Old/Acconage/StatutTcUpdateRequest
+php artisan make:request Old/Acconage/TrafficUpdateRequest
+
+
+php artisan make:request Old/Parc/BatterieCreateRequest
+php artisan make:request Old/Parc/BatterieEtatCreateRequest
+php artisan make:request Old/Parc/BatterieTypeCreateRequest
+php artisan make:request Old/Parc/PriseCreateRequest
+php artisan make:request Old/Parc/ChargeurCreateRequest
+php artisan make:request Old/Parc/ReptcCreateRequest
+php artisan make:request Old/Parc/ReptcActionCreateRequest
+php artisan make:request Old/Parc/ReptcSideCreateRequest
+
+php artisan make:request Old/Parc/BatterieUpdateRequest
+php artisan make:request Old/Parc/BatterieEtatUpdateRequest
+php artisan make:request Old/Parc/BatterieTypeUpdateRequest
+php artisan make:request Old/Parc/PriseUpdateRequest
+php artisan make:request Old/Parc/ChargeurUpdateRequest
+php artisan make:request Old/Parc/ReptcUpdateRequest
+php artisan make:request Old/Parc/ReptcActionUpdateRequest
+php artisan make:request Old/Parc/ReptcSideUpdateRequest
+
+
+### CONTROLLEURS ###
+
+php artisan make:controller Fichiers/ActiviteController -r --api --model=Fichiers/Activite
+php artisan make:controller Fichiers/ApkController -r --api
+php artisan make:controller Fichiers/ChauffeurController -r --api --model=Fichiers/Chauffeur
+php artisan make:controller Fichiers/EtapeSuiviBookingController -r --api --model=Fichiers/EtapeSuiviBooking
+php artisan make:controller Fichiers/LieuApproController -r --api --model=Fichiers/LieuAppro
+php artisan make:controller Fichiers/PanneController -r --api --model=Fichiers/Panne
+php artisan make:controller Fichiers/RLieuController -r --api --model=Fichiers/RLieu
+php artisan make:controller Fichiers/StationEmpotageController -r --api --model=Fichiers/StationEmpotage
+php artisan make:controller Fichiers/TransporteurController -r --api --model=Fichiers/Transporteur
+php artisan make:controller Fichiers/TypeIncidentController -r --api --model=Fichiers/TypeIncident
+
+php artisan make:controller PermissionController -r --api --model=\Spatie\Permission\Models\Permission
+php artisan make:controller RoleController -r --api --model=\Spatie\Permission\Models\Role
+php artisan make:controller UserController -r --api --model=User
+
+php artisan make:controller AuthController
+php artisan make:controller AlertController
+
+php artisan make:controller Engins/ControleGensetController
+php artisan make:controller Engins/ApproCarburantController -r --api --model=Engins/ApproCarburant
+
+php artisan make:controller Export/AttributionCliponController -r --api --model=Export/AttributionClipon
+php artisan make:controller Export/AttributionCliponVerifController -r --api --model=Export/AttributionCliponVerif
+php artisan make:controller Export/AttributionCliponRetourController -r --api --model=Export/AttributionCliponRetour
+php artisan make:controller Export/AttributionCliponRetourVerifController -r --api --model=Export/AttributionCliponRetourVerif
+php artisan make:controller Export/AttributionTcController -r --api --model=Export/AttributionTc
+php artisan make:controller Export/BookingTcController -r --api --model=Export/BookingTc
+php artisan make:controller Export/BookingTcFinalController -r --api --model=Export/BookingTcFinal
+php artisan make:controller Export/DemandeBookingController -r --api --model=Export/DemandeBooking
+php artisan make:controller Export/EmbarquementTcController -r --api --model=Export/EmbarquementTc
+php artisan make:controller Export/EmpotageTcPositController -r --api --model=Export/EmpotageTcPosit
+php artisan make:controller Export/FinPositTcController -r --api --model=Export/FinPositTc
+php artisan make:controller Export/FinPositCliponVerifController -r --api --model=Export/FinPositCliponVerif
+php artisan make:controller Export/FinRetourTcController -r --api --model=Export/FinRetourTc
+php artisan make:controller Export/FinRetourCliponVerifController -r --api --model=Export/FinRetourCliponVerif
+php artisan make:controller Export/IncidentController -r --api --model=Export/Incident
+php artisan make:controller Export/MotifRefusBookingController -r --api --model=Export/MotifRefusBooking
+php artisan make:controller Export/ParamTcReeferController -r --api --model=Export/ParamTcReefer
+php artisan make:controller Export/PositionnementTcController -r --api --model=Export/PositionnementTc
+php artisan make:controller Export/PositionnementTcPropreMoyenController -r --api --model=Export/PositionnementTcPropreMoyen
+php artisan make:controller Export/RetourTcController -r --api --model=Export/RetourTc
+
+php artisan make:controller Old/Acconage/BranchementController -r --api --model=Old/Acconage/Branchement
+php artisan make:controller Old/Acconage/CompteurController -r --api --model=Old/Acconage/Compteur
+php artisan make:controller Old/Acconage/CompteurEauController -r --api --model=Old/Acconage/CompteurEau
+php artisan make:controller Old/Acconage/Mod_DockerController -r --api --model=Old/Acconage/Mod_Docker
+php artisan make:controller Old/Acconage/ProduitBranchController -r --api --model=Old/Acconage/ProduitBranch
+php artisan make:controller Old/Acconage/ReleveIndexCompteurController -r --api --model=Old/Acconage/ReleveIndexCompteur
+php artisan make:controller Old/Acconage/ReleveIndexEauController -r --api --model=Old/Acconage/ReleveIndexEau
+php artisan make:controller Old/Acconage/ReleveShiftController -r --api --model=Old/Acconage/ReleveShift
+php artisan make:controller Old/Acconage/ReleveTemperatureReeferController -r --api --model=Old/Acconage/ReleveTemperatureReefer
+php artisan make:controller Old/Acconage/StatutTcController -r --api --model=Old/Acconage/StatutTc
+php artisan make:controller Old/Acconage/TrafficController -r --api --model=Old/Acconage/Traffic
+
+php artisan make:controller Compta/F_ComptetController -r --api --model=Compta/F_Comptet
+
+php artisan make:controller Old/Eolis/A_EtatcsController -r --api --model=Old/Eolis/A_Etatcs
+php artisan make:controller Old/Eolis/A_TcsdebController -r --api --model=Old/Eolis/A_Tcsdeb
+php artisan make:controller Old/Eolis/A_TcsembController -r --api --model=Old/Eolis/A_Tcsemb
+php artisan make:controller Old/Eolis/ClientController -r --api --model=Old/Eolis/Client
+php artisan make:controller Old/Eolis/CompteTierController -r --api --model=Old/Eolis/Compte_Tiers
+php artisan make:controller Old/Eolis/EscaleController -r --api --model=Old/Eolis/Escale
+php artisan make:controller Old/Eolis/FacentetController -r --api --model=Old/Eolis/Facentet
+php artisan make:controller Old/Eolis/FactureController -r --api --model=Old/Eolis/Facture
+php artisan make:controller Old/Eolis/NavireController -r --api --model=Old/Eolis/Navire
+php artisan make:controller Old/Eolis/OperateuController -r --api --model=Old/Eolis/Operateu
+php artisan make:controller Old/Eolis/PortController -r --api --model=Old/Eolis/Port
+php artisan make:controller Old/Eolis/ProduitController -r --api --model=Old/Eolis/Produit
+php artisan make:controller Old/Eolis/ReglementAchatController -r --api --model=Old/Eolis/Reglement_Achat
+php artisan make:controller Old/Eolis/Situation_TcController -r --api --model=Old/Eolis/Situation_Tc
+php artisan make:controller Old/Eolis/TcsBaseController -r --api --model=Old/Eolis/TcsBase
+php artisan make:controller Old/Eolis/UsernameController -r --api --model=Old/Eolis/Username
+
+php artisan make:controller Old/Etf/EnginController -r --api --model=Old/Etf/Engin
+php artisan make:controller Old/Etf/SuiviKmController -r --api --model=Old/Etf/SuiviKm
+
+php artisan make:controller Old/Parc/ChargeurController -r --api --model=Old/Parc/Chargeur
+php artisan make:controller Old/Parc/EnginController -r --api --model=Old/Parc/Engin
+php artisan make:controller Old/Parc/LigneSortieController -r --api --model=Old/Parc/LigneSortie
+php artisan make:controller Old/Parc/OIController -r --api --model=Old/Parc/OI
+php artisan make:controller Old/Parc/OTController -r --api --model=Old/Parc/OT
+php artisan make:controller Old/Parc/PieceController -r --api --model=Old/Parc/Piece
+php artisan make:controller Old/Parc/SignalPanneController -r --api --model=Old/Parc/SignalPanne
+php artisan make:controller Old/Parc/SortieController -r --api --model=Old/Parc/Sortie
+php artisan make:controller Old/Parc/TypenginController -r --api --model=Old/Parc/Typengin
+
+php artisan make:controller Archives/DocumentController -r --api --model=Archives/Document
+php artisan make:controller Archives/DossarchiveController -r --api --model=Archives/Dossarchive
+
+php artisan make:controller Syntheses/ExportController
+php artisan make:controller Syntheses/CarburantController
+
+
+### Stratégies de sécurité ###
+
+php artisan make:policy Fichiers/ActivitePolicy --model=Fichiers/Activite
+php artisan make:policy Fichiers/ChauffeurPolicy --model=Fichiers/Chauffeur
+php artisan make:policy Fichiers/EtapeSuiviBookingPolicy --model=Fichiers/EtapeSuiviBooking
+php artisan make:policy Fichiers/LieuApproPolicy --model=Fichiers/LieuAppro
+php artisan make:policy Fichiers/PannePolicy --model=Fichiers/Panne
+php artisan make:policy Fichiers/RLieuPolicy --model=Fichiers/RLieu
+php artisan make:policy Fichiers/StationEmpotagePolicy --model=Fichiers/StationEmpotage
+php artisan make:policy Fichiers/TransporteurPolicy --model=Fichiers/Transporteur
+php artisan make:policy Fichiers/TypeIncidentPolicy --model=Fichiers/TypeIncident
+
+php artisan make:policy UserPolicy --model=User
+php artisan make:policy PermissionPolicy --model=\Spatie\Permission\Models\Permission
+php artisan make:policy RolePolicy --model=\Spatie\Permission\Models\Role
+
+php artisan make:policy Engins/ApproCarburantPolicy --model=Engins/ApproCarburant
+
+php artisan make:policy Export/AttributionCliponPolicy --model=Export/AttributionClipon
+php artisan make:policy Export/AttributionCliponRetourPolicy --model=Export/AttributionCliponRetour
+php artisan make:policy Export/AttributionTcPolicy --model=Export/AttributionTc
+php artisan make:policy Export/BookingTcPolicy --model=Export/BookingTc
+php artisan make:policy Export/BookingTcFinalPolicy --model=Export/BookingTcFinal
+php artisan make:policy Export/DemandeBookingPolicy --model=Export/DemandeBooking
+php artisan make:policy Export/EmbarquementTcPolicy --model=Export/EmbarquementTc
+php artisan make:policy Export/EmpotageTcPositPolicy --model=Export/EmpotageTcPosit
+php artisan make:policy Export/FinPositTcPolicy --model=Export/FinPositTc
+php artisan make:policy Export/FinRetourTcPolicy --model=Export/FinRetourTc
+php artisan make:policy Export/IncidentPolicy --model=Export/Incident
+php artisan make:policy Export/MotifRefusBookingPolicy --model=Export/MotifRefusBooking
+php artisan make:policy Export/ParamTcReeferPolicy --model=Export/ParamTcReefer
+php artisan make:policy Export/PositionnementTcPolicy --model=Export/PositionnementTc
+php artisan make:policy Export/RetourTcPolicy --model=Export/RetourTc
+
+php artisan make:policy Compta/F_ComptetPolicy --model=Compta/F_Comptet
+
+php artisan make:policy Old/Eolis/A_EtatcsPolicy --model=Old/Eolis/A_Etatcs
+php artisan make:policy Old/Eolis/ClientPolicy --model=Old/Eolis/Client
+php artisan make:policy Old/Eolis/CompteTierPolicy --model=Old/Eolis/Compte_Tiers
+php artisan make:policy Old/Eolis/EscalePolicy --model=Old/Eolis/Escale
+php artisan make:policy Old/Eolis/FacentetPolicy --model=Old/Eolis/Facentet
+php artisan make:policy Old/Eolis/ViewFacentetPolicy --model=Old/Eolis/View_Facentet
+php artisan make:policy Old/Eolis/FacturePolicy --model=Old/Eolis/Facture
+php artisan make:policy Old/Eolis/NavirePolicy --model=Old/Eolis/Navire
+php artisan make:policy Old/Eolis/OperateuPolicy --model=Old/Eolis/Operateu
+php artisan make:policy Old/Eolis/PortPolicy --model=Old/Eolis/Port
+php artisan make:policy Old/Eolis/ProduitPolicy --model=Old/Eolis/Produit
+php artisan make:policy Old/Eolis/ReglementAchatPolicy --model=Old/Eolis/Reglement_Achat
+php artisan make:policy Old/Eolis/TcsBasePolicy --model=Old/Eolis/TcsBase
+php artisan make:policy Old/Eolis/UsernamePolicy --model=Old/Eolis/Username
+
+php artisan make:policy Old/Etf/EnginPolicy --model=Old/Etf/Engin
+php artisan make:policy Old/Etf/SuiviKmPolicy --model=Old/Etf/SuiviKm
+
+php artisan make:policy Old/Parc/EnginPolicy --model=Old/Parc/Engin
+php artisan make:policy Old/Parc/LigneSortiePolicy --model=Old/Parc/LigneSortie
+php artisan make:policy Old/Parc/OIPolicy --model=Old/Parc/OI
+php artisan make:policy Old/Parc/OTPolicy --model=Old/Parc/OT
+php artisan make:policy Old/Parc/SignalPannePolicy --model=Old/Parc/SignalPanne
+php artisan make:policy Old/Parc/SortiePolicy --model=Old/Parc/Sortie
+php artisan make:policy Old/Parc/TypenginPolicy --model=Old/Parc/Typengin
+php artisan make:policy Old/Parc/ReptcPolicy --model=Old/Parc/Reptc
+php artisan make:policy Old/Parc/ReptcActionPolicy --model=Old/Parc/ReptcAction
+php artisan make:policy Old/Parc/ReptcSidePolicy --model=Old/Parc/ReptcSide
+php artisan make:policy Old/Parc/BatteriePolicy --model=Old/Parc/Batterie
+php artisan make:policy Old/Parc/BatterieWorkingTimePolicy --model=Old/Parc/BatterieWorkingTime
+php artisan make:policy Old/Parc/BatterieEtatPolicy --model=Old/Parc/BatterieEtat
+php artisan make:policy Old/Parc/BatterieTypePolicy --model=Old/Parc/BatterieType
+php artisan make:policy Old/Parc/PrisePolicy --model=Old/Parc/Prise
+php artisan make:policy Old/Parc/ChargeurPolicy --model=Old/Parc/Chargeur
+
+php artisan make:policy Archives/DocumentPolicy --model=Archives/Document
+php artisan make:policy Archives/DossarchivePolicy --model=Archives/Dossarchive
+
+
+### Observateurs d'évènement Eloquent ###
+
+php artisan make:observer Fichiers/ActiviteObserver --model=Fichiers/Activite
+php artisan make:observer Fichiers/ChauffeurObserver --model=Fichiers/Chauffeur
+php artisan make:observer Fichiers/EtapeSuiviBookingObserver --model=Fichiers/EtapeSuiviBooking
+php artisan make:observer Fichiers/LieuApproObserver --model=Fichiers/LieuAppro
+php artisan make:observer Fichiers/PanneObserver --model=Fichiers/Panne
+php artisan make:observer Fichiers/RLieuObserver --model=Fichiers/RLieu
+php artisan make:observer Fichiers/StationEmpotageObserver --model=Fichiers/StationEmpotage
+php artisan make:observer Fichiers/TransporteurObserver --model=Fichiers/Transporteur
+php artisan make:observer Fichiers/TypeIncidentObserver --model=Fichiers/TypeIncident
+
+php artisan make:observer UserObserver --model=User
+php artisan make:observer PermissionObserver --model=\Spatie\Permission\Models\Permission
+php artisan make:observer RoleObserver --model=\Spatie\Permission\Models\Role
+
+php artisan make:observer Engins/ApproCarburantObserver --model=Engins/ApproCarburant
+
+php artisan make:observer Export/AttributionCliponObserver --model=Export/AttributionClipon
+php artisan make:observer Export/AttributionCliponRetourObserver --model=Export/AttributionCliponRetour
+php artisan make:observer Export/AttributionTcObserver --model=Export/AttributionTc
+php artisan make:observer Export/BookingTcFinalObserver --model=Export/BookingTcFinal
+php artisan make:observer Export/DemandeBookingObserver --model=Export/DemandeBooking
+php artisan make:observer Export/EmbarquementTcObserver --model=Export/EmbarquementTc
+php artisan make:observer Export/EmpotageTcPositObserver --model=Export/EmpotageTcPosit
+php artisan make:observer Export/FinPositTcObserver --model=Export/FinPositTc
+php artisan make:observer Export/FinRetourTcObserver --model=Export/FinRetourTc
+php artisan make:observer Export/IncidentObserver --model=Export/Incident
+php artisan make:observer Export/MotifRefusBookingObserver --model=Export/MotifRefusBooking
+php artisan make:observer Export/ParamTcReeferObserver --model=Export/ParamTcReefer
+php artisan make:observer Export/PositionnementTcObserver --model=Export/PositionnementTc
+php artisan make:observer Export/RetourTcObserver --model=Export/RetourTc
+
+php artisan make:observer Export/AttributionCliponRetourVerifObserver --model=Export/AttributionCliponRetourVerif
+php artisan make:observer Export/AttributionCliponVerifObserver --model=Export/AttributionCliponVerif
+php artisan make:observer Export/BookingTcObserver --model=Export/BookingTc
+php artisan make:observer Export/FinPositCliponVerifObserver --model=Export/FinPositCliponVerif
+php artisan make:observer Export/FinRetourCliponVerifObserver --model=Export/FinRetourCliponVerif
+php artisan make:observer Export/PositionnementTcPropreMoyenObserver --model=Export/PositionnementTcPropreMoyen
+php artisan make:observer Export/RetourTcMainObserver --model=Export/RetourTcMain
+php artisan make:observer Export/RetourTcPropreMoyenObserver --model=Export/RetourTcPropreMoyen
+
+#php artisan make:observer Compta/F_ComptetObserver --model=Compta/F_Comptet
+
+#php artisan make:observer Old/Eolis/A_EtatcsObserver --model=Old/Eolis/A_Etatcs
+#php artisan make:observer Old/Eolis/ClientObserver --model=Old/Eolis/Client
+#php artisan make:observer Old/Eolis/CompteTierObserver --model=Old/Eolis/Compte_Tiers
+#php artisan make:observer Old/Eolis/EscaleObserver --model=Old/Eolis/Escale
+#php artisan make:observer Old/Eolis/FacentetObserver --model=Old/Eolis/Facentet
+#php artisan make:observer Old/Eolis/FactureObserver --model=Old/Eolis/Facture
+#php artisan make:observer Old/Eolis/NavireObserver --model=Old/Eolis/Navire
+#php artisan make:observer Old/Eolis/OperateuObserver --model=Old/Eolis/Operateu
+#php artisan make:observer Old/Eolis/PortObserver --model=Old/Eolis/Port
+#php artisan make:observer Old/Eolis/ProduitObserver --model=Old/Eolis/Produit
+#php artisan make:observer Old/Eolis/ReglementAchatObserver --model=Old/Eolis/Reglement_Achat
+#php artisan make:observer Old/Eolis/TcsBaseObserver --model=Old/Eolis/TcsBase
+#php artisan make:observer Old/Eolis/UsernameObserver --model=Old/Eolis/Username
+
+#php artisan make:observer Old/Etf/EnginObserver --model=Old/Etf/Engin
+php artisan make:observer Old/Etf/SuiviKmObserver --model=Old/Etf/SuiviKm
+
+#php artisan make:observer Old/Parc/EnginObserver --model=Old/Parc/Engin
+#php artisan make:observer Old/Parc/LigneSortieObserver --model=Old/Parc/LigneSortie
+php artisan make:observer Old/Parc/OIObserver --model=Old/Parc/OI
+#php artisan make:observer Old/Parc/OTObserver --model=Old/Parc/OT
+php artisan make:observer Old/Parc/SignalPanneObserver --model=Old/Parc/SignalPanne
+#php artisan make:observer Old/Parc/SortieObserver --model=Old/Parc/Sortie
+#php artisan make:observer Old/Parc/TypenginObserver --model=Old/Parc/Typengin
+
+php artisan make:observer Old/Parc/ReptcObserver --model=Old/Parc/Reptc
+php artisan make:observer Old/Parc/ReptcActionObserver --model=Old/Parc/ReptcAction
+php artisan make:observer Old/Parc/ReptcSideObserver --model=Old/Parc/ReptcSide
+php artisan make:observer Old/Parc/BatterieWorkingTimeObserver --model=Old/Parc/BatterieWorkingTime
+php artisan make:observer Old/Parc/BatterieObserver --model=Old/Parc/Batterie
+php artisan make:observer Old/Parc/BatterieEtatObserver --model=Old/Parc/BatterieEtat
+php artisan make:observer Old/Parc/BatterieTypeObserver --model=Old/Parc/BatterieType
+php artisan make:observer Old/Parc/PriseObserver --model=Old/Parc/Prise
+php artisan make:observer Old/Parc/ChargeurObserver --model=Old/Parc/Chargeur
+
+#php artisan make:observer Archives/DocumentObserver --model=Archives/Document
+#php artisan make:observer Archives/DossarchiveObserver --model=Archives/Dossarchive
+
+
+php artisan make:mail NouvelleDemandeBooking
+php artisan make:mail NouvelUtilisateurTier
+
