@@ -62,8 +62,7 @@ class EmplacementConteneurController extends Controller
 
 
     public function getTcBySite($id_site){
-        $data = EmplacementConteneur::select('no_tc')
-        ->where('id_site', $id_site)
+        $data = EmplacementConteneur::where('id_site', $id_site)
         ->where('last_posit', 1)
         ->get();
         return response()->json([

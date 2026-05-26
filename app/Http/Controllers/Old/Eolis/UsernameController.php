@@ -32,9 +32,30 @@ class UsernameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function filter()
+    public function filter() 
     {
         $req = Username::with(['user'])->orderBy('nomcomplet','ASC');
+
+        if(request()->has('search') && request()->search != '')
+        {
+            $req->whereRaw("UPPER(nomcomplet) LIKE ?", ['%'.mb_strtoupper(request()->search).'%'])
+                ->limit(50);
+
+            if(request()->has('searchFixe') && request()->searchFixe != '' && request()->searchFixe != 0)
+            {
+                $req->where('code_serv', '=', request()->searchFixe);
+            }
+
+            return response()->json($req->get(), 200);
+        }
+
+        return response()->json([], 200);
+    }
+
+
+     public function filterbis() 
+    {
+        $req = Username::orderBy('nomcomplet','ASC');
 
         if(request()->has('search') && request()->search != '')
         {
@@ -68,12 +89,7 @@ class UsernameController extends Controller
                       ->orWhereRaw("UPPER(codeuser) LIKE ?", ['%'.request()->search.'%']);
             });
         }
-/*
-        if(request()->has('statut') && request()->statut != '')
-        {
-            $req->where('idtransporteur',request()->statut);
-        }
-*/
+
         $displayedColumns = [
             'codeuser' => 'codeuser',
             'nomcomplet' => 'nomcomplet',

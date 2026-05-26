@@ -17,5 +17,12 @@ class View_listetc_a_embarque extends Model
     
     protected $fillable = [];
 
-   
+    public function produit()
+    {
+        return $this->hasMany(Booking_produit::class, 'reference', 'reference');
+    }
+    public function portdebarq()
+    {
+        return $this->hasOne(Port::class, 'codeport', 'port_deb');
+    }
 }

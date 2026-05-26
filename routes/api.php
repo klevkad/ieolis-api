@@ -365,6 +365,8 @@ Route::middleware('auth:api')->group(function() {
         Route::get('/tcs-base/paginate', [TcsBaseController::class, 'paginate']);
         Route::get('/tcs-base/filter', [TcsBaseController::class, 'filter']);
 
+        Route::get('/username/filterbis', [UsernameController::class, 'filterbis']);
+
         Route::resource('/a_etatcs', A_EtatcsController::class);
         Route::resource('/a_tcsdeb', A_TcsdebController::class);
         Route::resource('/a_tcsemb', A_TcsembController::class);

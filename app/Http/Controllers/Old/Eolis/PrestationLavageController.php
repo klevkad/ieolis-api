@@ -111,6 +111,7 @@ class PrestationLavageController extends Controller
                     'observation',
                     'date_lavage',
                     'idengin',
+                    'laveur',
                     'app'
                 ]);
 

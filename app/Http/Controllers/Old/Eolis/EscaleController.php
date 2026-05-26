@@ -100,7 +100,7 @@ class EscaleController extends Controller
 
     public function filterListeTcEmbVoyage()
     {
-        $req = View_listetc_a_embarque::orderBy('no_tc','ASC');
+        $req = View_listetc_a_embarque::with('produit.produit','portdebarq')->orderBy('no_tc','ASC');
 
         if(request()->has('search') && request()->search != '')
         {

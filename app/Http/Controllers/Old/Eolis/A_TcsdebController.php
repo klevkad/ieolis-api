@@ -10,6 +10,7 @@ use App\Models\Old\Eolis\A_Tcsdeb;
 use App\Models\Old\Eolis\A_Etatcs;
 use App\Models\Old\Acconage\EmplacementConteneur;
 
+
 class A_TcsdebController extends Controller
 {
 
@@ -111,21 +112,27 @@ class A_TcsdebController extends Controller
         
         DB::beginTransaction();
         try {
-             if($request->plomb1 || $request->plomb2){
-                $existingTcsdeb = A_Tcsdeb::where('noescale', $request->noescale)
+            if ($request->plomb1 || $request->plomb2) {
+                $exists = A_Tcsdeb::where('noescale', $request->noescale)
                     ->where(function ($query) use ($request) {
-                        $query->where('plomb1', $request->plomb1)
-                            ->orWhere('plomb2', $request->plomb2);
+                        if ($request->plomb1) {
+                            $query->where('plomb1', $request->plomb1);
+                        }
+                        if ($request->plomb2) {
+                            $query->orWhere('plomb2', $request->plomb2);
+                        }
                     })
-                    ->first();
-                if ($existingTcsdeb) {
+                    ->exists();
+
+                if ($exists) {
                     return response()->json([ 
                         'status' => 0,
-                        'msg' => 'Le plomb existe déjà pour cette escale.', 
+                        'msg' => 'Le plomb saisi existe déjà pour cette escale.', 
                         'error' => null, 
                     ]);
                 }
             }
+            
             A_Etatcs::where('no_tc', $request->no_tc)->update(['last_mvt' => '']);
             $id = A_Etatcs::create([
                     'noescale' => $request->noescale,
@@ -139,12 +146,25 @@ class A_TcsdebController extends Controller
 
                
             $dataToStore = $request->only(['idprev_debarq', 'no_tc', 'noescale','plein_vide','plomb1','plomb2','app']);
-            $a_Tcsdeb = A_Tcsdeb::create($dataToStore+[
+            $a_Tcsdeb = A_Tcsdeb::updateOrCreate(
+                ['no_tc' => trim($request->no_tc),
+                'noescale' => trim($request->noescale)],
+                $dataToStore + [
                 'date_deb' => $request->date_deb ? date('Y-m-d H:i:s', strtotime(str_replace('T', ' ', $request->date_deb))) : null,
                 'datesaisie' => date('Y-m-d H:i:s'),
                 'codeuser' => \Auth::user()->model->codeuser,
                 'top_tbdt' => $request->extbdt,
                 'id_etat' => $id,
+            ]);
+            EmplacementConteneur::where('no_tc', trim($request->no_tc))->update(['last_posit' => 0]);
+            EmplacementConteneur::create([
+                'no_tc'     => trim($request->no_tc),
+                'id_site'      => 11,
+                'last_posit' => 1,
+                'sivide' => $request->nbprod==0 ? 2 : 1,
+                'codeuser' => \Auth::user()->model->codeuser,
+                // 'longitude' => $request->longitude,
+                // 'latitude'  => $request->latitude,
             ]);
             DB::commit();
             return response()->json([

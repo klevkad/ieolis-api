@@ -16,7 +16,7 @@ class Prestation_lavage_Conteneur extends Model
     protected $connection = 'eolis';
     
 
-    protected $fillable = ['no_tc','username','observation','date_lavage','idengin','app','created_at','updated_at'];
+    protected $fillable = ['no_tc','username','observation','date_lavage','idengin','app','laveur','created_at','updated_at'];
 
     public function tcs_base()
     {

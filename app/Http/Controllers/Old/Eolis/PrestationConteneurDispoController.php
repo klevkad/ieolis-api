@@ -112,9 +112,10 @@ class PrestationConteneurDispoController extends Controller
             $noTcs = $request->no_tc;
 
             foreach ($noTcs as $tc) {
-                $dataToStore = $request->only(['client', 'observation','date_mad']);
+                $dataToStore = $request->only(['client', 'observation','date_mad','humidite','produit','camion','set_point','volet']);
                 $prest = Prestation_Conteneur_Dispo::create($dataToStore+[
                     'no_tc' => trim($tc),
+                    'affecter' => 1,
                     'username' => \Auth::user()->model->codeuser,
                 ]); 
             }
@@ -127,7 +128,7 @@ class PrestationConteneurDispoController extends Controller
             return response()->json([
                 'status' => 0,
                 'msg' => 'Enregistrement échoué.', 
-                'error' => $e->getMessage(), // Only for development
+                'error' => $e->getMessage(), 
             ]);
         }
     }

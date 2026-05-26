@@ -123,18 +123,23 @@ class A_TcsembController extends Controller {
     { 
         DB::beginTransaction();
         try {
-            // vérifier si le plomb1 ou le plomb2 existe déjà pour le même noecale
-            if($request->plomb || $request->plomb2){
-                $existingTcsemb = A_Tcsemb::where('noescale', $request->noescale)
+            
+            if ($request->plomb || $request->plomb2) {
+                $exists = A_Tcsemb::where('noescale', $request->noescale)
                     ->where(function ($query) use ($request) {
-                        $query->where('plomb1', $request->plomb)
-                            ->orWhere('plomb2', $request->plomb2);
+                        if ($request->plomb) {
+                            $query->where('plomb1', $request->plomb);
+                        }
+                        if ($request->plomb2) {
+                            $query->orWhere('plomb2', $request->plomb2);
+                        }
                     })
-                    ->first();
-                if ($existingTcsemb) {
+                    ->exists(); 
+
+                if ($exists) {
                     return response()->json([ 
                         'status' => 0,
-                        'msg' => 'Le plomb existe déjà pour cette escale.', 
+                        'msg' => 'Le plomb saisi existe déjà pour cette escale.', 
                         'error' => null, 
                     ]);
                 }
@@ -152,21 +157,46 @@ class A_TcsembController extends Controller {
             ])->id_auto;
 
             $dataToStore = $request->only(['noescale', 'no_tc','plomb2','idbookingfinal','tare_tc','extbdt','port_deb','app']);
-            $a_Tcsemb = A_Tcsemb::create($dataToStore+[
-                'date_mvt' => date('Y-m-d H:i:s'),
-                'datesaisie' => date('Y-m-d H:i:s'),
-                'port_emb' => 'CIABJ',
-                'plomb1' => $request->plomb,
-                'id_etat' => $id,
-                'codeuser' => \Auth::user()->model->codeuser,
-            ]);
+           
+             $a_Tcsemb = A_Tcsemb::updateOrCreate(
+                ['no_tc' => trim($request->no_tc),
+                'noescale' => trim($request->noescale)], 
+                $dataToStore + [
+                    'date_mvt' => date('Y-m-d H:i:s'),
+                    'datesaisie' => date('Y-m-d H:i:s'),
+                    'port_emb' => 'CIABJ',
+                    'plomb1' => $request->plomb,
+                    'id_etat' => $id,
+                    'codeuser' => \Auth::user()->model->codeuser,
+                ]
+            );
+            // $a_Tcsemb = A_Tcsemb::create($dataToStore+[
+            //     'date_mvt' => date('Y-m-d H:i:s'),
+            //     'datesaisie' => date('Y-m-d H:i:s'),
+            //     'port_emb' => 'CIABJ',
+            //     'plomb1' => $request->plomb,
+            //     'id_etat' => $id,
+            //     'codeuser' => \Auth::user()->model->codeuser,
+            // ]);
             
             BookingFinal::where('idbookingfinal', $request->idbookingfinal)->update(['etat_emb' => 2, 'embarque' => 'Emb']);
+            EmplacementConteneur::where('no_tc', trim($request->no_tc))->update(['last_posit' => 0]);
+            EmplacementConteneur::create([
+                'no_tc'     => trim($request->no_tc),
+                'id_site'      => 9,
+                'last_posit' => 1,
+                'sivide' => $request->nbprod==0 ? 2 : 1,
+                'codeuser' => \Auth::user()->model->codeuser,
+                // 'longitude' => $request->longitude,
+                // 'latitude'  => $request->latitude,
+            ]);
             return response()->json([
                     'status' => 1,
                     'msg' => 'Enregistrement effectué avec succès.', 
                     'error' => null, 
             ]);
+
+            
             DB::commit();
          } catch (\Exception $e) {
                 DB::rollBack();
