@@ -158,11 +158,13 @@ class A_TcsdebController extends Controller
             ]);
             EmplacementConteneur::where('no_tc', trim($request->no_tc))->update(['last_posit' => 0]);
             EmplacementConteneur::create([
-                'no_tc'     => trim($request->no_tc),
+                'no_tc' => trim($request->no_tc),
                 'id_site'      => 11,
                 'last_posit' => 1,
-                'sivide' => $request->nbprod==0 ? 2 : 1,
+                'sivide' => (int)$request->plein_vide === 0 ? 2 : 1,
                 'codeuser' => \Auth::user()->model->codeuser,
+                'source' => 2,
+                'sourceid' => $a_Tcsdeb->idtcsdeb,
                 // 'longitude' => $request->longitude,
                 // 'latitude'  => $request->latitude,
             ]);

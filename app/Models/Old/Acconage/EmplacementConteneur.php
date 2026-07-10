@@ -16,7 +16,7 @@ class EmplacementConteneur extends Model
     public $timestamps = true;
     protected $connection = 'acconage';
 
-    protected $fillable = ['idemplacement', 'no_tc','id_site','last_posit', 'codeuser', 'created_at','updated_at'];
+    protected $fillable = ['idemplacement', 'no_tc','id_site','last_posit', 'codeuser','sivide','source','sourceid', 'created_at','updated_at'];
     
     public function site()
     {

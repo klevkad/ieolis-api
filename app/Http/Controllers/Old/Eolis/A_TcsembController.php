@@ -170,14 +170,6 @@ class A_TcsembController extends Controller {
                     'codeuser' => \Auth::user()->model->codeuser,
                 ]
             );
-            // $a_Tcsemb = A_Tcsemb::create($dataToStore+[
-            //     'date_mvt' => date('Y-m-d H:i:s'),
-            //     'datesaisie' => date('Y-m-d H:i:s'),
-            //     'port_emb' => 'CIABJ',
-            //     'plomb1' => $request->plomb,
-            //     'id_etat' => $id,
-            //     'codeuser' => \Auth::user()->model->codeuser,
-            // ]);
             
             BookingFinal::where('idbookingfinal', $request->idbookingfinal)->update(['etat_emb' => 2, 'embarque' => 'Emb']);
             EmplacementConteneur::where('no_tc', trim($request->no_tc))->update(['last_posit' => 0]);
@@ -187,8 +179,8 @@ class A_TcsembController extends Controller {
                 'last_posit' => 1,
                 'sivide' => $request->nbprod==0 ? 2 : 1,
                 'codeuser' => \Auth::user()->model->codeuser,
-                // 'longitude' => $request->longitude,
-                // 'latitude'  => $request->latitude,
+                'source' => 1,
+                'sourceid' => $a_Tcsemb->idtcsemb,
             ]);
             return response()->json([
                     'status' => 1,

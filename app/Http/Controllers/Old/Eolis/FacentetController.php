@@ -132,8 +132,8 @@ class FacentetController extends Controller
                       ->orWhereHas('produitobj', function (Builder $q) {
                             $q->where('lib_produit',request()->search);
                         })
-                      ->orWhereRaw("UPPER(justif) LIKE ?", ['%'.mb_strtoupper(request()->search).'%'])/*
-                      ->orWhereRaw("UPPER(date_fact) LIKE ?", ['%'.mb_strtoupper(request()->search).'%'])*/
+                      ->orWhereRaw("UPPER(justif) LIKE ?", ['%'.mb_strtoupper(request()->search).'%'])
+                      ->orWhereRaw("UPPER(reference_fne) LIKE ?", ['%'.mb_strtoupper(request()->search).'%'])
                       ->orWhereHas('operateur', function (Builder $q) {
                             $q->where('liboper',request()->search);
                         })

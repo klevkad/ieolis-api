@@ -83,14 +83,15 @@ class EmplacementConteneurController extends Controller
         $noTcs = $request->no_tc;
 
         foreach ($noTcs as $tc) {
-            EmplacementConteneur::where('no_tc', trim($tc))->update(['last_posit' => 0]);
+            $empl = EmplacementConteneur::where('no_tc', trim($tc))->update(['last_posit' => 0]);
             EmplacementConteneur::create([
                 'no_tc'     => trim($tc),
                 'id_site'      => $request->id_site,
                 'last_posit' => 1,
                 'codeuser' => \Auth::user()->model->codeuser,
-                // 'longitude' => $request->longitude,
-                // 'latitude'  => $request->latitude,
+                'sivide' => $empl->sivide ?? 2,
+                'source' => $empl->source ?? 0,
+                'source_id' => $empl->source_id ?? null,
             ]);
         }
 
@@ -140,6 +141,20 @@ class EmplacementConteneurController extends Controller
      */
     public function destroy(EmplacementConteneur $emplacement_tc)
     {
-        //
+        
+        try{
+            $emplacement_tc->delete();
+        }catch(\Illuminate\Database\QueryException $ex){
+             return response()->json([
+                    'status' => 0,
+                    'msg' => 'Une erreur est survenue lors de la suppression.', 
+                    'error' => null,
+            ]);
+        }
+        return response()->json([
+            'status' => 1,
+            'msg' => 'Suppression de la ligne réussie!', 
+            'error' => null, 
+        ]);
     }
 }

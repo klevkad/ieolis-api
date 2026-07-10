@@ -244,6 +244,7 @@ class SortieController extends Controller
             $sortie->lignesorties->each(function($ligneSortie) use ($request, $sortie) {
 
                 $ligneSortie->update([
+                    'datesaisie' => $request->datebon,
                     'qtesortie' => $request->qtesortie,
                     'idengin' => $request->idengin,
                     'enregistre' => \Auth::user()->model->codeuser
