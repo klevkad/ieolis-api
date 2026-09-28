@@ -16,7 +16,7 @@ class LigneSortie extends Model
     protected $connection = 'parc';
     protected $keyType = 'string';
     
-    protected $fillable = ['idlignesor','idengin', 'qtesortie', 'idbon', 'datesaisie', 'idpiece', 'codeservice', 'enregistre'];
+    protected $fillable = ['idlignesor','idengin', 'qtesortie', 'idbon', 'datesaisie', 'idpiece', 'codeservice', 'enregistre','index_compteur'];
 
     public function sortie()
     {

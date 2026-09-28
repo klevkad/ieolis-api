@@ -173,16 +173,16 @@ class OuvertureStationController extends Controller
     public function checkouvertureencour($stationid)
     {
         $ouverturestation = OuvertureStation::whereNull('datefermeture')
-            ->where('stationid', $stationid)
-            ->orderBy('ouverture_id', 'DESC')
-            ->count();
+        ->where('stationid', $stationid)
+        ->orderBy('ouverture_id', 'DESC')
+        ->count();
         if($ouverturestation > 0){
             return response()->json(false, 200);
         }else{
             $lastouverturestation = OuvertureStation::whereNotNull('datefermeture')
-                ->where('stationid', $stationid)
-                ->orderBy('ouverture_id', 'DESC')
-                ->first();
+            ->where('stationid', $stationid)
+            ->orderBy('ouverture_id', 'DESC')
+            ->first();
             $indexfin = $lastouverturestation ? $lastouverturestation->indexfin : 0;
             
             return response()->json($lastouverturestation, 200);
@@ -198,7 +198,6 @@ class OuvertureStationController extends Controller
     public function show($id)
     {
         $ouverture_station = OuvertureStation::find($id);
-        // $this->authorize('view', $ouverture_station); // Appelle la méthode view() de votre OuvertureStationPolicy
         return response()->json($ouverture_station);
     }
 

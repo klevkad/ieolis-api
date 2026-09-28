@@ -174,10 +174,10 @@ class SortieController extends Controller
             ]);
 
            
-            $ligneSortie = LigneSortie::create($request->only(['idengin', 'qtesortie','idpiece'])+ [
+            $ligneSortie = LigneSortie::create($request->only(['idengin', 'qtesortie','idpiece','index_compteur'])+ [
                 'idbon' => $newIDBON,
                 'idjustif_sortie' => 0,
-                'datesaisie' => Carbon::now(),
+                'datesaisie' => request()->datebon,
                 'codeservice' => 'ACC',
                 'enregistre' => \Auth::user()->model->codeuser
             ]);
@@ -247,6 +247,7 @@ class SortieController extends Controller
                     'datesaisie' => $request->datebon,
                     'qtesortie' => $request->qtesortie,
                     'idengin' => $request->idengin,
+                    'index_compteur' => $request->index_compteur,
                     'enregistre' => \Auth::user()->model->codeuser
                 ]);
                 $quantiteDifference = $request->qtesortie - $request->qtesortieorigine;
